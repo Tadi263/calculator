@@ -69,13 +69,13 @@ btns.forEach(btn => {
 });
 
 function onPressBackspace() {
+    if(number1 != '' && number2 != ''){
+        outputField.innerHTML = '';
+        return false;
+    }
     if(number1 == '' || number1 != '' && inputField.value.length != 0){
         inputField.value = inputField.value.substring(0, inputField.value.length - 1); 
     }
-    if(number1 != '' && number2 != ''){
-        outputField.innerHTML = '';
-    }
-    
 }
 
 backspace.addEventListener("click", onPressBackspace);
@@ -115,7 +115,6 @@ operaters.forEach(operater => {
                 }
             number1 = inputField.value;
             operatorSymbol = operater.id;
-            inputField.value = '';
             outputField.innerHTML = number1 + ' ' + operater.textContent;
             console.log("number1 =" + number1);
             console.log("operatorsymbol=" + operatorSymbol);
