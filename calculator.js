@@ -50,7 +50,14 @@ const outputField = document.querySelector('#output-display');
 
 const operaters =  document.querySelectorAll('button[class~="operators"]');
 
+const equalsBtn = document.getElementById("=");
+
 function updateInputBox(event) {
+    if (equalsBtn.classList == "operators activated" && number2 == ''){
+        outputField.innerHTML = '';
+        inputField.value = '';
+    }
+    equalsBtn.classList.remove("activated");
     inputField.value += event.target.id;  // Get the id of the clicked button
 }
 
@@ -61,11 +68,25 @@ btns.forEach(btn => {
 
 operaters.forEach(operater => {
     operater.addEventListener("click", () => {
-                if (operater.id == '='){
+                if (operater.id == '=' && !equalsBtn.classList.contains("activated")){
+                    equalsBtn.classList.add("activated");
                     number2 = inputField.value;
                     outputField.innerHTML += ' ' + number2 + ' ' + '=';
                     operator()
                     return false;
+                }
+                if (operater.id == '=' && equalsBtn.classList.contains("activated")){
+                    number1 = inputField.value;
+                    outputField.innerHTML = number1 + ' ' + operatorSymbol + ' ' + number2 + ' ' + '=';
+                    console.log(operatorSymbol);
+                    operator()
+                    return false;
+                }
+                if (equalsBtn.classList.contains("activated")){
+                    operatorSymbol = operater.id;
+                    number1 = inputField.value;
+                    outputField.innerHTML = number1 + ' ' + operater.textContent;
+                    console.log(number2);
                 }
             number1 = inputField.value;
             operatorSymbol = operater.id;
