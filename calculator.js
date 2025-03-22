@@ -52,6 +52,8 @@ const operaters =  document.querySelectorAll('button[class~="operators"]');
 
 const equalsBtn = document.getElementById("=");
 
+const backspace = document.getElementById("backspace");
+
 function updateInputBox(event) {
     if (equalsBtn.classList == "operators activated" && number2 == ''){
         outputField.innerHTML = '';
@@ -66,9 +68,21 @@ btns.forEach(btn => {
     btn.addEventListener("click", updateInputBox);
 });
 
+function onPressBackspace() {
+    if(number1 == '' || number1 != '' && inputField.value.length != 0){
+        inputField.value = inputField.value.substring(0, inputField.value.length - 1); 
+    }
+    if(number1 != '' && number2 != ''){
+        outputField.innerHTML = '';
+    }
+    
+}
+
+backspace.addEventListener("click", onPressBackspace);
+
 operaters.forEach(operater => {
     operater.addEventListener("click", () => {
-                if (operater.id == '=' && !equalsBtn.classList.contains("activated")){
+                if (operater.id == '=' && !equalsBtn.classList.contains("activated") && number2 != ''){
                     equalsBtn.classList.add("activated");
                     number2 = inputField.value;
                     outputField.innerHTML += ' ' + number2 + ' ' + '=';
@@ -87,13 +101,25 @@ operaters.forEach(operater => {
                     number1 = inputField.value;
                     outputField.innerHTML = number1 + ' ' + operater.textContent;
                     console.log(number2);
+                    return false;
+                }
+                if(operater.id == '=' && operatorSymbol != '' && number2 == 0){
+                    equalsBtn.classList.add("activated");
+                    number2 = number1;
+                    outputField.innerHTML += ' ' + number2 + ' ' + '=';
+                    operator();
+                    return false;
+                }
+                if (number1 != '' && number2 == ''){
+                    return false;
                 }
             number1 = inputField.value;
             operatorSymbol = operater.id;
             inputField.value = '';
             outputField.innerHTML = number1 + ' ' + operater.textContent;
-            console.log(number1);
-            console.log(operatorSymbol);
+            console.log("number1 =" + number1);
+            console.log("operatorsymbol=" + operatorSymbol);
+            console.log("number2 =" + number2);
             console.log(inputField.value);}
         );
 });
