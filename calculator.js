@@ -55,8 +55,16 @@ const equalsBtn = document.getElementById("=");
 const backspace = document.getElementById("backspace");
 
 function updateInputBox(event) {
+    operaters.forEach(operater => {
+        if (operater.classList.contains("activated") && number1 != '' && inputField.value == number1) {
+            inputField.value = '';
+        }
+    });
+    if (equalsBtn.classList == "operators activated" && number1 != '' && number2 == ''){
+        number2 = '';
+    }
     if (equalsBtn.classList == "operators activated" && number2 == ''){
-        outputField.innerHTML = '';
+        number2 = '';
         inputField.value = '';
     }
     equalsBtn.classList.remove("activated");
@@ -82,11 +90,28 @@ backspace.addEventListener("click", onPressBackspace);
 
 operaters.forEach(operater => {
     operater.addEventListener("click", () => {
+        operater.classList.add("activated");
                 if (operater.id == '=' && !equalsBtn.classList.contains("activated") && number2 != ''){
                     equalsBtn.classList.add("activated");
                     number2 = inputField.value;
                     outputField.innerHTML += ' ' + number2 + ' ' + '=';
                     operator()
+                    return false;
+                }
+                if (operater.id == '=' && equalsBtn.classList.contains("activated") && inputField.value != '') {
+                    equalsBtn.classList.add("activated");
+                    
+                    // If number2 is already set (after a calculation), use number1 for the next calculation
+                    if (number2 != '') {
+                        number1 = inputField.value;  // Update number1 with the new input value
+                        outputField.innerHTML = number1 + ' ' + operatorSymbol + ' ' + number2 + ' ' + '=';  // Update output display
+                    } else {
+                        // If number2 is not set, it means it's the first calculation, so we use the current value of number1
+                        number2 = inputField.value;  // Set number2 as input value
+                        outputField.innerHTML += ' ' + number2 + ' ' + '=';  // Continue output display
+                    }
+                    
+                    operator();  // Perform the operation with the updated numbers
                     return false;
                 }
                 if (operater.id == '=' && equalsBtn.classList.contains("activated")){
@@ -99,13 +124,14 @@ operaters.forEach(operater => {
                 if (equalsBtn.classList.contains("activated")){
                     operatorSymbol = operater.id;
                     number1 = inputField.value;
+                    number2 = '';
                     outputField.innerHTML = number1 + ' ' + operater.textContent;
                     console.log(number2);
                     return false;
                 }
                 if(operater.id == '=' && operatorSymbol != '' && number2 == 0){
                     equalsBtn.classList.add("activated");
-                    number2 = number1;
+                    number2 = inputField.value || number1;
                     outputField.innerHTML += ' ' + number2 + ' ' + '=';
                     operator();
                     return false;
