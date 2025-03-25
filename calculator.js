@@ -42,7 +42,6 @@ function buttonCount(event) {
     }
     buttonclicked = event.target.innerText;
     buttoncount += 1;
-    console.log(buttoncount);
 };
 
 function updateInputBox(event) {
@@ -161,8 +160,6 @@ operators.forEach(operator => {
         number1 = inputField.value;
         operatorSymbol = opText;
         outputField.innerHTML = `${number1} ${operatorSymbol}`;
-
-        console.log(`number1 = ${number1}, operatorSymbol = ${operatorSymbol}, number2 = ${number2}`);
     });
 });
 
